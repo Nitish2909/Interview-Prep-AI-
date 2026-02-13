@@ -1,14 +1,15 @@
 const Question = require("../models/Question");
 const Session = require("../models/Session");
+const {generateInterviewQuestions} = require('./aiController')
 
 //@desc    Add additional questions to an existing session
 //@route   POST  /api/questions/add
 //@access  Private
 exports.addQuestionsToSession = async (req, res) => {
   try {
-    const { sessionId, questions } = req.body;
+    const { sessionId } = req.body;
 
-    if (!sessionId || !questions || !Array.isArray(questions)) {
+    if (!sessionId) {
       return res.status(400).json({
         message: "Invalid input data",
       });
@@ -22,20 +23,35 @@ exports.addQuestionsToSession = async (req, res) => {
       });
     }
 
+    
+    req.body = {
+      role:session.role,
+      experience:session.experience, 
+      topicsToFocus:session.topicsToFocus, 
+      numberOfQuestions:10
+    }
+  
+    await generateInterviewQuestions(req,res,()=>{});
+    const data = req.questions
+
     //create new questions
     const createdQuestions = await Question.insertMany(
-      questions.map((q) => ({
+      data.questions.map((q) => ({
         session: sessionId,
         question: q.question,
         answer: q.answer,
+        isPinned: false,
+        note:null
       })),
+      {new:true}
     );
 
+    
     //Update session to include new question IDs
     session.questions.push(...createdQuestions.map((q) => q._id));
     await session.save();
-
-    res.status(201).json(createdQuestions);
+    
+    res.status(201).send({success:true,createdQuestions:createdQuestions});
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
@@ -76,24 +92,23 @@ exports.togglePinQuestion = async (req, res) => {
 //@access  Private
 exports.updateQuestionNote = async (req, res) => {
   try {
-    const { note} = req.body;
+    const { note } = req.body;
     const question = await Question.findById(req.params.id);
 
-    if(!question){
-        return res.status(404).json({
-            success: false,
-            message : "Question not Found"
-        })
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: "Question not Found",
+      });
     }
 
     question.note = note || "";
     await question.save();
 
     res.status(200).json({
-        success: true,
-        question
-    })
-
+      success: true,
+      question,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",

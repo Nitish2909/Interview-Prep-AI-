@@ -14,7 +14,7 @@ const ai = new OpenAi({
 //@desc   Generate interview Questions ans answers using gemini
 //@route  POST /api/ai/generate-questions
 //@access  Private
-const generateInterviewQuestions = async (req, res) => {
+const generateInterviewQuestions = async (req, res, next) => {
   try {
     const { role, experience, topicsToFocus, numberOfQuestions } = req.body;
 
@@ -47,20 +47,17 @@ const generateInterviewQuestions = async (req, res) => {
 
     //Now safe to parse
     const data = JSON.parse(cleanedText);
-
-    res.status(200).json(data);
+    req.questions = data
+    next()
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to generate Questions",
-      error: error.message,
-    });
+    next(error)
   }
 };
 
 //@desc   Generate Explains a interview Questions
 //@route  POST /api/ai/generate-explanation
 //@access  Private
-const generateConceptExplanation = async (req, res) => {
+const generateConceptExplanation = async (req, res, next) => {
   try {
     const { question } = req.body;
     if (!question) {
@@ -86,7 +83,8 @@ const generateConceptExplanation = async (req, res) => {
     //Now safe to parse
     const data = JSON.parse(cleanedText);
 
-    res.status(200).json(data);
+    req.explanation = data.explanation
+    next()
   } catch (error) {
     res.status(500).json({
       message: "Failed to generate Explanation",
