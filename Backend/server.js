@@ -14,8 +14,8 @@ const app = express();
 //Middleware to handle CORS
 app.use(
     cors({
-        // origin:"http://localhost:5173",
-        origin:"*",
+        origin:"https://interview-prep-ai-frontend-elw6.onrender.com/",
+        // origin:"*",
         methods: ["GET","POST","PUT","DELETE"],
         allowedHeaders: ['Content-Type', 'Authorization'],
 
