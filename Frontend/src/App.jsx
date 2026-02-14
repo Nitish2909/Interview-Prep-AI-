@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
@@ -8,7 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Home/Dashboard";
 import InterviewPrep from "./pages/InterviewPrep/InterviewPrep";
 import UserProvider from "./context/userContext";
-import Footer from "./components/layouts/footer";
+import Footer from "./components/layouts/Footer";
 import SearchPage from "./pages/SearchPage";
 
 const App = () => {
