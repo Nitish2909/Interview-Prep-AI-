@@ -47,10 +47,10 @@ const generateInterviewQuestions = async (req, res, next) => {
 
     //Now safe to parse
     const data = JSON.parse(cleanedText);
-    req.questions = data
-    next()
+    req.questions = data;
+    next();
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -59,13 +59,19 @@ const generateInterviewQuestions = async (req, res, next) => {
 //@access  Private
 const generateConceptExplanation = async (req, res, next) => {
   try {
-    const { question } = req.body;
-    if (!question) {
+    const { question, query } = req.body;
+    const askedQuestion = question || query;
+    if (!askedQuestion) {
       return res.status(400).json({
         message: "Missing Required Fields",
       });
     }
-    const prompt = conceptExplainPrompt(question);
+    let prompt;
+    if (question) {
+      prompt = conceptExplainPrompt(question);
+    } else {
+      prompt = generalQuestionExplainPrompt(query);
+    }
 
     const response = await ai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -83,8 +89,8 @@ const generateConceptExplanation = async (req, res, next) => {
     //Now safe to parse
     const data = JSON.parse(cleanedText);
 
-    req.explanation = data.explanation
-    next()
+    req.explanation = data.explanation;
+    next();
   } catch (error) {
     res.status(500).json({
       message: "Failed to generate Explanation",

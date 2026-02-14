@@ -46,4 +46,41 @@ const conceptExplainPrompt = (question) => `
         Important: Do NOT add any extra text outside JSON format. Only return valid JSON.
         `;
 
-module.exports = {questionAnswerPrompt, conceptExplainPrompt};
+    const generalQuestionExplainPrompt = (question)=>{
+      `
+You are an expert interviewer.
+
+Your job is to generate a strong, interview-ready answer for the given question.
+
+Question: "${question}"
+
+Instructions:
+- Write the answer as if you are speaking in an interview.
+- Start with a short direct answer (2-3 lines).
+- Then explain the concept in a simple beginner-friendly way.
+- Include real-world example(s) if possible.
+- If the question is technical, include a small clean code example.
+- Add common mistakes or misconceptions (if applicable).
+- Keep the formatting clean, readable, and structured.
+- Do not include unnecessary filler text.
+
+Return ONLY valid JSON in the format below:
+
+{
+  "question": "${question}",
+  "shortAnswer": "",
+  "detailedAnswer": "",
+  "example": "",
+  "code": "",
+  "commonMistakes": [
+    ""
+  ]
+}
+
+Important:
+- Do NOT add any extra text outside JSON format.
+- Only return valid JSON.
+`;
+
+    }
+module.exports = {questionAnswerPrompt, conceptExplainPrompt,generalQuestionExplainPrompt};
