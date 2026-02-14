@@ -72,8 +72,8 @@ const SignUp = ({ setCurrentPage }) => {
   };
   return (
     <div className="w-[90vw] md:w-[33vw] p-3 flex flex-col  ">
-      <h3 className="text-lg font-semibold text-black">Create an Account</h3>
-      <p className="text-xs text-slate-700 mt-[5px] mb-6">
+      <h3 className="text-lg font-semibold text-black ml-29">Create an Account</h3>
+      <p className="text-xs text-slate-700 mt-[5px] mb-6 ml-20">
         Join us today by entering your details below
       </p>
 

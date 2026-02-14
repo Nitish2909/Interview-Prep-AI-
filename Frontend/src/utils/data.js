@@ -43,4 +43,16 @@ export const APP_FEATURES = [
     description:
       "Easily save your interview sets, organize them neatly in your dashboard and pickup your preparation right where you left off.",
   },
+    {
+    id: "06",
+    title: "Ask Questions, Learn and Revisit",
+    description:
+      "There are also the feature to Easily search answer of given question.",
+  },
+     {
+    id: "07",
+    title: "Ask Any Questions",
+    description:
+      "Ask any type of Question.It gives a small and also give detiled answer.It also give the real world Example and if you Ask technical Question then it give answer and with Example",
+  },
 ];
